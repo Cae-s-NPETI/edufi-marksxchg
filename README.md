@@ -6,7 +6,7 @@ Backend source code for the EduFi marks exchange package.
 > EduFi is in no way a registered trademark or an official application. It is an academic project to simulate microservices. Author bears no responsibility for any injuries caused, cats killed in the using of any portion the app.
 
 ## Architecture & Design considerations
-![image](https://user-images.githubusercontent.com/93184095/150816540-8f74c5f5-e3c0-4f93-90f4-9d9d4c5dd192.png)
+![image](https://user-images.githubusercontent.com/93184095/150818159-a0488dfe-cf14-42ba-a72d-abfc0b5e4089.png)
 
 ## Setting up
 
