@@ -10,7 +10,7 @@ Backend source code for the EduFi marks exchange package.
 
 ### Ports in use
 | Host Port | Internal container port | Reserved by |
-| ---- | ---- |
+| ---- | ---- | ---- |
 | 9160 | 9160 | Frontend |
 | 9161 | 3306 | MySQL server |
 | 9162 | 80 | PHPMyAdmin |

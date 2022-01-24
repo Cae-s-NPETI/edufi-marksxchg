@@ -25,9 +25,16 @@ services:
     image: "redis:alpine"
     command: redis-server --requirepass ${REDIS_PASS:?redis password not set}
     ports:
-      - "9163:6379"
+      - 9163:6379
     volumes:
       - redis_data:/var/lib/redis
+
+  trades:
+    env_file:
+      - .env
+    build: ./trades
+    ports:
+      - 9165:9165
 
 volumes:
   db_data:
