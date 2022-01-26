@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Jan 26, 2022 at 04:18 PM
+-- Generation Time: Jan 26, 2022 at 07:26 PM
 -- Server version: 10.6.5-MariaDB-1:10.6.5+maria~focal
 -- PHP Version: 7.4.27
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `edufi_marks_xchg`
 --
+CREATE DATABASE IF NOT EXISTS `edufi_marks_xchg` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `edufi_marks_xchg`;
 
 -- --------------------------------------------------------
 
