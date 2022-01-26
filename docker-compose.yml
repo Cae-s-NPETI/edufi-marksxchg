@@ -2,6 +2,7 @@ services:
   db:
     image: mariadb
     volumes:
+      - ./sql_init:/docker-entrypoint-initdb.d
       - db_data:/var/lib/mysql
     restart: always
     environment:
