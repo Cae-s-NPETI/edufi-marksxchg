@@ -1,18 +1,23 @@
-FROM node:16-alpine
+FROM node:16-alpine as builder
 
 RUN npm install -g pnpm
 
-#WORKDIR /usr/app
-COPY pnpm-lock.yaml ./
-RUN pnpm fetch
+COPY . ./usr/app
+WORKDIR /usr/app
 
-COPY . ./
 RUN pnpm install --frozen-lockfile
-
-ENV NODE_ENV production
 RUN pnpm run build
+RUN pnpm prune --production
+
+FROM node:16-alpine as runner
+ENV NODE_ENV production
+
+# Copy necessary build ouputs
+COPY --from=builder /usr/app/package.json ./package.json
+COPY --from=builder /usr/app/pnpm-lock.yaml ./pnpm-lock.yaml
+COPY --from=builder /usr/app/node_modules ./node_modules
+COPY --from=builder /usr/app/dist ./dist
 
 EXPOSE 9165
-USER node
 
-ENTRYPOINT ["pnpm", "run", "start:prod"]
+ENTRYPOINT ["npm", "run", "start:prod"]
