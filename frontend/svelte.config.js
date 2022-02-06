@@ -29,7 +29,7 @@ const config = {
 
 		paths: {
 			// Deployment to GH-pages
-			base: isGhPages ? '/edufi-marksxch' : '',
+			base: isGhPages ? '/edufi-marksxchg' : '',
 		},
 	}
 };
