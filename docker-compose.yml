@@ -35,6 +35,7 @@ services:
   trades:
     env_file:
       - .env
+    # TODO: image
     build: ./trades
     ports:
       - 9165:9165

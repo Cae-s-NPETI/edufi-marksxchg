@@ -1,0 +1,267 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/CaeNGnp/ETI2/1.0.0
+info:
+  version: 1.0.1
+  title: EduFi Marks Exchange API
+
+tags:
+  - name: student
+    description: Endpoints accessible to students
+
+paths:
+  /trades:
+    get:
+      tags:
+        - student
+      security:
+        - session: []
+      summary: lists open trade offers, newest first
+      parameters:
+        - in: query
+          name: skip
+          description: number of records to skip for pagination
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - in: query
+          name: limit
+          description: maximum number of records to return
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            maximum: 50
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: number
+                    description: The total number of records
+                  result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FullTrade'
+
+    post:
+      tags:
+        - student
+      summary: creates a new trade offer
+      security:
+        - session: []
+      parameters:
+        - in: query
+          name: searchString
+          description: pass an optional search string for looking up inventory
+          required: false
+          schema:
+            type: string
+      requestBody:
+        description: The trade information
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/PartialTrade'
+                - required:
+                  - offerToken
+                  - returnToken
+
+      responses:
+        '204':
+          description: successful creation
+        '400':
+          description: invalid input
+        '409':
+          description: an existing item already exists
+
+  /trades/{id}:
+    patch:
+      tags:
+        - student
+      summary: updates a trade offer
+      security:
+        - session: []
+      parameters:
+        - in: path
+          name: id
+          description: id of the trade to update
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: The trade information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PartialTrade'
+      responses:
+        '200':
+          description: successful creation
+        '404':
+          description: id not found
+
+    delete:
+      tags:
+        - student
+      summary: deletes a trade offer
+      security:
+        - session: []
+      parameters:
+        - in: path
+          name: id
+          description: id of the trade to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: successful deletion
+        '404':
+          description: id not found
+
+  # /trades/{id}/accept:
+  #   post:
+  #     tags:
+  #       - student
+  #     summary: accepts a trade offer
+  #     security:
+  #       - session: []
+  #     parameters:
+  #       - in: path
+  #         name: id
+  #         description: id of the trade to accept
+  #         required: true
+  #         schema:
+  #           type: integer
+  #     responses:
+  #       '204':
+  #         description: successful accept
+  #       '404':
+  #         description: id not found
+
+  /tradeHistory:
+    get:
+      tags:
+        - student
+      security:
+        - session: []
+      summary: shows the user's trading history, newest first
+      parameters:
+        - in: query
+          name: skip
+          description: number of records to skip for pagination
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - in: query
+          name: limit
+          description: maximum number of records to return
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            maximum: 50
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: number
+                    description: The total number of records
+                  result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OldTrade'
+        '403':
+          description: Not the right role to use this
+
+
+components:
+  securitySchemes:
+    session:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    PartialTrade:
+      type: object
+      properties:
+        offerToken:
+          type: object
+          properties:
+            tokenType:
+              type: string
+              example: "DOP"
+            quantity:
+              type: integer
+        returnToken:
+          type: object
+          properties:
+            tokenType:
+              type: string
+              example: "SE"
+            quantity:
+              type: integer
+
+    FullTrade:
+      allOf:
+        - type: object
+          required:
+            - id
+            - authorId
+            - dateCreated
+            - dateModified
+            - offerToken
+            - returnToken
+          properties:
+            id:
+              type: integer
+            authorId:
+              type: integer
+            dateCreated:
+              type: string
+              format: date-time
+              example: '2016-08-29T09:12:33.001Z'
+            dateModified:
+              type: string
+              format: date-time
+              example: '2016-08-29T09:12:33.001Z'
+        - $ref: '#/components/schemas/PartialTrade'
+
+    OldTrade:
+      allOf:
+        - type: object
+          required:
+            - id
+            - authorId
+            - dateCreated
+            - dateModified
+            - dateFulfilled
+            - offerToken
+            - returnToken
+          properties:
+            fulfillerId:
+              type: integer
+              description: the user ID of the trade fulfiller
+            dateFulfilled:
+              type: string
+              format: date-time
+              example: '2016-08-29T09:12:33.001Z'
+        - $ref: '#/components/schemas/FullTrade'

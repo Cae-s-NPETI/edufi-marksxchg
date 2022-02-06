@@ -8,6 +8,8 @@ Backend source code for the EduFi marks exchange package.
 ## Architecture & Design considerations
 ![image](https://user-images.githubusercontent.com/93184095/150818159-a0488dfe-cf14-42ba-a72d-abfc0b5e4089.png)
 
+<!-- db structure -->
+
 ### Ports in use
 | Host Port | Internal container port | Reserved by |
 | ---- | ---- | ---- |
@@ -21,3 +23,16 @@ Backend source code for the EduFi marks exchange package.
 
 ## Setting up
 
+Pre-requisite:
+- [Docker](https://www.docker.com/)
+
+<!-- https://docs.docker.com/compose/extends/#understanding-multiple-compose-files -->
+```bash
+# To run blockingly in the console, remove "-d" (detach)
+
+# To build off source
+docker-compose up -d
+
+# To pull from docker
+docker-compose -f docker-compose.yml up -d
+```
