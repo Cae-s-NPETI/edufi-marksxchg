@@ -1,0 +1,14 @@
+# Main
+.DS_Store
+node_modules
+/build
+/build-node
+/build-gh
+/.svelte-kit
+/package
+.env
+.env.*
+!.env.example
+
+# Temporary
+/src/lib/smelte

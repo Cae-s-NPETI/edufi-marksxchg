@@ -1,0 +1,138 @@
+/* Write your global styles here, in PostCSS syntax */
+@import url("https://fonts.googleapis.com/css2?family=Assistant&display=swap");
+@import url("https://fonts.cdnfonts.com/css/soopafresh");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Basic site style */
+h1,
+.h1 {
+    @apply text-5xl f-light mb-3;
+    letter-spacing: -1.5px;
+}
+
+h2,
+.h2 {
+    @apply text-4xl f-light mb-3;
+    letter-spacing: -0.5px;
+}
+
+h3,
+.h3 {
+    @apply text-3xl f-regular mb-3;
+    letter-spacing: 0px;
+}
+
+h4,
+.h4 {
+    @apply text-2xl f-regular mb-3;
+    letter-spacing: 0.25px;
+}
+
+h5,
+.h5 {
+    @apply text-xl f-regular mb-3;
+    letter-spacing: 0px;
+}
+
+h6,
+.h6 {
+    @apply text-base f-medium mb-3;
+    letter-spacing: 0.15px;
+}
+
+.body-1 {
+    @apply text-base;
+    letter-spacing: 0.5px;
+}
+
+.body-2 {
+    @apply text-sm;
+    letter-spacing: 0.25px;
+}
+
+.button {
+    letter-spacing: 0.0892857143em;
+}
+
+.link {
+    @apply text-yellow-600;
+}
+
+.link:hover {
+    @apply text-yellow-500 underline;
+}
+
+/* Colors */
+/*
+background: #FFFFFF
+background-secondary: #F4F4F5
+text: #000000
+
+background-dark:  ?
+background-secondary-dark:  ?
+text-dark: #F4F4F5
+
+divinity-background: #4F46E5
+spiritual-background: #CA8A04
+*/
+.site-bg-primary {
+    @apply bg-white dark:bg-gray-800;
+}
+
+.site-bg-secondary {
+    @apply bg-gray-100 dark:bg-gray-700;
+}
+
+.site-text-primary {
+    @apply text-gray-800 dark:text-gray-100;
+}
+
+.site-text-lighter {
+    @apply text-gray-500 dark:text-gray-400;
+}
+
+.site-border-subtle {
+    @apply border-gray-200 dark:border-gray-600;
+}
+
+/* Fonts */
+html {
+    @apply f-regular;
+    font-family: Assistant, sans-serif;
+}
+
+/* Default colors */
+body {
+    @apply site-bg-primary site-text-primary;
+}
+
+.f-extralight {
+    font-weight: 600;
+}
+
+.f-light {
+    font-weight: 300;
+}
+
+.f-regular {
+    font-weight: 400;
+}
+
+.f-medium {
+    font-weight: 500;
+}
+
+.f-semibold {
+    font-weight: 600;
+}
+
+.f-bold {
+    font-weight: 700;
+}
+
+.f-extrabold {
+    font-weight: 800;
+}
