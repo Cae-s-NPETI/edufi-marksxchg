@@ -35,10 +35,16 @@ services:
   trades:
     env_file:
       - .env
-    # TODO: image
-    build: ./trades
+    image: caengnp/trades
     ports:
       - 9165:9165
+
+  frontend:
+    env_file:
+      - .env
+    image: caengnp/eti2frontend
+    ports:
+      - 9160:9160
 
 volumes:
   db_data:
