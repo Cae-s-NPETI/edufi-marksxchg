@@ -1,5 +1,7 @@
 <script lang="ts">
 import type { Trade } from "$lib/structures/trades";
+import axios from "axios";
+import { createEventDispatcher } from "svelte";
 
     import { slide } from "svelte/transition";
 
@@ -9,6 +11,12 @@ import type { Trade } from "$lib/structures/trades";
 
     const props = {
 
+    }
+
+    const dispatch = createEventDispatcher();
+    function deleteTrade(id) {
+        //await axios.delete("/trades/"+id);
+        dispatch("delete");
     }
 </script>
 
@@ -41,10 +49,34 @@ import type { Trade } from "$lib/structures/trades";
             </div>
             <div class="mt-1 flex items-center text-sm p-4">
                 <div class="flex-1">
-                    Author ID
+                    Giving
                 </div>
                 <div class="flex px-3 f-semibold">
-                    {tradeInfo.authorId}
+                    {tradeInfo.offerTokenQuantity} {tradeInfo.offerTokenType}
+                </div>
+            </div>
+            <div class="mt-1 flex items-center text-sm p-4">
+                <div class="flex-1">
+                    For
+                </div>
+                <div class="flex px-3 f-semibold">
+                    {tradeInfo.returnTokenQuantity} {tradeInfo.returnTokenType}
+                </div>
+            </div>
+            <div class="mt-1 flex items-center text-sm p-4">
+                <div class="flex-1">
+                    Message
+                </div>
+                <div class="flex px-3 f-semibold">
+                    {tradeInfo.message}
+                </div>
+            </div>
+            <div class="mt-1 flex items-center text-sm p-4">
+                <div class="flex-1">
+                    Modified at
+                </div>
+                <div class="flex px-3 f-semibold">
+                    {new Date(tradeInfo.dateModified)}
                 </div>
             </div>
         </div>
@@ -53,7 +85,9 @@ import type { Trade } from "$lib/structures/trades";
             <hr class="w-9/12 m-auto site-border-subtle" />
             <!-- breaking to the next row -->
             <div class="flex flex-col p-3" transition:slide|local={{ duration: 200 }}>
-                edit delete
+                edit
+                <!-- svelte-ignore a11y-missing-attribute -->
+                <button on:click={deleteTrade}>[delete]</button>
             </div>
         {/if}
     </div>

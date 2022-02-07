@@ -6,23 +6,26 @@
     import { onMount } from "svelte";
 import { tradesSvc } from "$lib/axios";
 import type { Trade } from "$lib/structures/trades";
+import OfferInput from "$lib/components/OfferInput.svelte";
 
     $title = "Trades";
 
     let trades = [] as Trade[];
 
-    onMount(async () => {
+    const upd = async () => {
         const resp = await tradesSvc.get("/trades");
         //console.dir(resp)
         trades = resp.data as Trade[];
-    });
+    }
+    onMount(upd);
 </script>
 
 <Main>
     <h3 class="text-center">Trades</h3>
+    <OfferInput></OfferInput>
     <TradeCardContainer>
         {#each trades as tradeInfo}
-            <TradeCard {tradeInfo} />
+            <TradeCard {tradeInfo} on:delete={upd} />
         {/each}
     </TradeCardContainer>
 </Main>
