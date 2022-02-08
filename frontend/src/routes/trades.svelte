@@ -31,7 +31,7 @@
 <Main>
     <h3 class="text-center">Trades</h3>
     <button
-        class="bg-gray-200 hover:bg-gray-100 text-grey-darkest font-bold py-2 px-4 my-2 rounded flex w-full items-center"
+        class="site-bg-secondary text-grey-darkest font-bold py-2 px-4 my-2 rounded flex w-full items-center"
         on:click={() => {
             addExpanded = !addExpanded;
         }}
