@@ -1,17 +1,19 @@
 <script lang="ts">
-import type { Trade } from "$lib/structures/trades";
-import axios from "axios";
-import { createEventDispatcher } from "svelte";
+    import type { Trade } from "$lib/structures/trades";
+    import { PencilAlt, Trash } from "@steeze-ui/heroicons";
+    import { Icon } from "@steeze-ui/svelte-icon";
+    import axios from "axios";
+    import { createEventDispatcher } from "svelte";
 
     import { slide } from "svelte/transition";
+    import OfferInput from "./OfferInput.svelte";
 
     export let tradeInfo: Trade;
 
     export let isExpanded = false;
+    let editExpanded = false;
 
-    const props = {
-
-    }
+    const props = {};
 
     const dispatch = createEventDispatcher();
     function deleteTrade(id) {
@@ -37,44 +39,35 @@ import { createEventDispatcher } from "svelte";
                 isExpanded = !isExpanded;
             }}
         >
-
             <!-- props -->
             <div class="mt-1 flex items-center text-sm p-4">
-                <div class="flex-1">
-                    Author ID
-                </div>
+                <div class="flex-1">Author ID</div>
                 <div class="flex px-3 f-semibold">
                     {tradeInfo.authorId}
                 </div>
             </div>
             <div class="mt-1 flex items-center text-sm p-4">
-                <div class="flex-1">
-                    Giving
-                </div>
+                <div class="flex-1">Giving</div>
                 <div class="flex px-3 f-semibold">
-                    {tradeInfo.offerTokenQuantity} {tradeInfo.offerTokenType}
+                    {tradeInfo.offerTokenQuantity}
+                    {tradeInfo.offerTokenType}
                 </div>
             </div>
             <div class="mt-1 flex items-center text-sm p-4">
-                <div class="flex-1">
-                    For
-                </div>
+                <div class="flex-1">For</div>
                 <div class="flex px-3 f-semibold">
-                    {tradeInfo.returnTokenQuantity} {tradeInfo.returnTokenType}
+                    {tradeInfo.returnTokenQuantity}
+                    {tradeInfo.returnTokenType}
                 </div>
             </div>
             <div class="mt-1 flex items-center text-sm p-4">
-                <div class="flex-1">
-                    Message
-                </div>
+                <div class="flex-1">Message</div>
                 <div class="flex px-3 f-semibold">
                     {tradeInfo.message}
                 </div>
             </div>
             <div class="mt-1 flex items-center text-sm p-4">
-                <div class="flex-1">
-                    Modified at
-                </div>
+                <div class="flex-1">Modified at</div>
                 <div class="flex px-3 f-semibold">
                     {new Date(tradeInfo.dateModified)}
                 </div>
@@ -85,10 +78,22 @@ import { createEventDispatcher } from "svelte";
             <hr class="w-9/12 m-auto site-border-subtle" />
             <!-- breaking to the next row -->
             <div class="flex flex-col p-3" transition:slide|local={{ duration: 200 }}>
-                edit
-                <!-- svelte-ignore a11y-missing-attribute -->
-                <button on:click={deleteTrade}>[delete]</button>
+                <button
+                    on:click={() => {
+                        editExpanded = !editExpanded;
+                    }}
+                >
+                    <Icon src={PencilAlt} class="inline h-4 w-4" />
+                    [edit]
+                </button>
+                <button on:click={deleteTrade}>
+                    <Icon src={Trash} class="inline h-4 w-4" />
+                    [delete]</button
+                >
             </div>
+            {#if editExpanded}
+                <div class="my-4" transition:slide><OfferInput type="modify" /></div>
+            {/if}
         {/if}
     </div>
 </div>
