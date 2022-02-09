@@ -44,7 +44,7 @@ services:
       - .env
     image: caengnp/eti2frontend
     ports:
-      - 9160:9160
+      - 3000:9160
 
 volumes:
   db_data:
