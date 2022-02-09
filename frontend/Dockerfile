@@ -15,8 +15,12 @@ ENV NODE_ENV production
 # Copy necessary build ouputs
 COPY --from=builder /usr/app/package.json ./package.json
 COPY --from=builder /usr/app/pnpm-lock.yaml ./pnpm-lock.yaml
+COPY --from=builder /usr/app/node_modules ./node_modules
 COPY --from=builder /usr/app/build-node ./build-node
+
+COPY ./startup.sh ./startup.sh
+RUN chmod +x ./startup.sh
 
 EXPOSE 3000
 
-ENTRYPOINT ["node", "build-node/index.js"]
+ENTRYPOINT ["sh", "./startup.sh"]
