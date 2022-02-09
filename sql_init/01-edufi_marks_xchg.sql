@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Feb 09, 2022 at 02:20 PM
+-- Generation Time: Feb 09, 2022 at 06:24 PM
 -- Server version: 10.6.5-MariaDB-1:10.6.5+maria~focal
 -- PHP Version: 7.4.27
 
@@ -50,7 +50,9 @@ CREATE TABLE `trades` (
 CREATE TABLE `trades_old` (
   `trade_author_id` int(11) NOT NULL,
   `trade_fulfil_id` int(11) NOT NULL,
-  `date_fulfilled` timestamp NOT NULL DEFAULT current_timestamp()
+  `date_fulfilled` timestamp NOT NULL DEFAULT current_timestamp(),
+  `author_offer_quantity` int(11) NOT NULL,
+  `fufil_offer_quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
