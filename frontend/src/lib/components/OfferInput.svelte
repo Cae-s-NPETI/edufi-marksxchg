@@ -43,7 +43,7 @@
                     break;
                 }
                 case "modify": {
-                    resp = await tradesSvc.patch("/trades/" + modifyId, params, {
+                    resp = await tradesSvc.put("/trades/" + modifyId, params, {
                         headers: {
                             "student-id": $studentId,
                         },
@@ -53,7 +53,7 @@
             }
         } catch (e) {
             if (axios.isAxiosError(e)) {
-                setStatus(false, `failed: ${e.response.data["description"]}`);
+                setStatus(false, `${e.response.statusText}: ${e.response.data["message"]}`);
             } else {
                 setStatus(false, `failed: ${e}`);
             }

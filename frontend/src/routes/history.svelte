@@ -22,7 +22,10 @@
             console.error(e);
         }
 
-        setInterval(upd, 5000);
+        // https://kaissaroj.medium.com/sveltejs-components-lifecycle-b01ac0cf6d59
+        // If a function is returned from onMount, it will be called when   the component is unmounted.
+        const interval = setInterval(upd, 5000);
+        return () => clearInterval(interval);
     };
     onMount(upd);
 

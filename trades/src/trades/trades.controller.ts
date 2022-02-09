@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Post, Query, Req } from '@nestjs/common';
+import { Headers, BadRequestException, Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Post, Query, Req, MethodNotAllowedException, Put } from '@nestjs/common';
 import { OldTrade, OngoingTrade, Trade } from './trades.entity';
 
 type PartialTradeToken = { tokenType: string, quantity: number }
@@ -21,7 +21,10 @@ export class TradesController {
     }
 
     @Post()
-    async addTrade(@Body() body: PartialTradeParam) {
+    async addTrade(
+        @Body() body: PartialTradeParam,
+        @Headers('student-id') hStudentId: string
+    ) {
         console.log("run")
         let trade = Trade.create();
 
@@ -29,7 +32,12 @@ export class TradesController {
             throw new BadRequestException("Missing token params");
         }
 
-        trade.authorId = 1; //tmp
+        let studentId = parseInt(hStudentId);
+        if (isNaN(studentId)) {
+            throw new BadRequestException("Student ID invalid");
+        }
+
+        trade.authorId = parseInt(hStudentId);
         trade.offerTokenType = body.offerToken.tokenType;
         trade.offerTokenQuantity = body.offerToken.quantity;
         trade.returnTokenType = body.returnToken.tokenType;
@@ -45,7 +53,6 @@ export class TradesController {
 
         console.log("save")
 
-        // todo: auto fill
         let allTrades = (await OngoingTrade.find(
             { relations: ["trade"] }
         )).map((on) => on.trade);
@@ -72,8 +79,6 @@ export class TradesController {
             return;
         }
 
-
-
         console.log("found a same ratios.");
 
         // Apply the differences
@@ -97,8 +102,8 @@ export class TradesController {
         oldTrade.save();
     }
 
-    // I know I should be putting this in a service.
-    async serviceDeleteTrade(id: number) {
+    // I know I should be putting this in a service..
+    async serviceDeleteTrade(id: number, studentId?: number) {
         let oTrade = await OngoingTrade.findOne({
             where: {
                 tradeId: id
@@ -108,25 +113,70 @@ export class TradesController {
             throw new NotFoundException('Trade ID not found ' + id);
         }
 
+        // Assert student id if needed
+        if (studentId) {
+            let trade = await Trade.findOne({
+                where: {
+                    id: id
+                }
+            });
+
+            // if the author is not the student, don't allow deleting
+            if (trade.authorId != studentId) {
+                throw new MethodNotAllowedException("You are not the author of this trade.");
+            }
+        }
+
         // rmv
         await oTrade.remove();
     }
 
-    @Delete(":id")
-    async deleteTrade(@Param('id', ParseIntPipe) id: number) {
-        await this.serviceDeleteTrade(id);
-    }
-}
-
-@Controller('trades')
-export class TradesHistoryController {
-    @Get()
-    async getTrades(
-        @Query("skip") skip,
-        @Query("limit") limit
+    @Put(":id")
+    async updateTrade(
+        @Headers('student-id') hStudentId: string,
+        @Body() body: PartialTradeParam,
+        @Param('id', ParseIntPipe) id: number
     ) {
-        return (await OngoingTrade.find(
-            { relations: ["trade"], order: { trade: "DESC" } }
-        )).map((on) => on.trade);
+        let studentId = parseInt(hStudentId);
+        if (isNaN(studentId)) {
+            throw new BadRequestException("Student ID invalid");
+        }
+
+        if (!body.offerToken || !body.returnToken) {
+            throw new BadRequestException("Missing token params");
+        }
+
+        let trade = await Trade.findOne({
+            where: {
+                id: id
+            }
+        });
+
+        // if the author is not the student, don't allow deleting
+        if (trade.authorId != studentId) {
+            throw new MethodNotAllowedException("You are not the author of this trade.");
+        }
+
+        trade.authorId = parseInt(hStudentId);
+        trade.offerTokenType = body.offerToken.tokenType;
+        trade.offerTokenQuantity = body.offerToken.quantity;
+        trade.returnTokenType = body.returnToken.tokenType;
+        trade.returnTokenQuantity = body.returnToken.quantity;
+        trade.message = body.message ?? "";
+
+        trade.save();
+    }
+
+    @Delete(":id")
+    async deleteTrade(
+        @Headers('student-id') hStudentId: string,
+        @Param('id', ParseIntPipe) id: number
+    ) {
+        let studentId = parseInt(hStudentId);
+        if (isNaN(studentId)) {
+            throw new BadRequestException("Student ID invalid");
+        }
+
+        await this.serviceDeleteTrade(id, studentId);
     }
 }

@@ -1,5 +1,6 @@
 <script lang="ts">
-import { tradesSvc } from "$lib/axios";
+    import { tradesSvc } from "$lib/axios";
+import { studentId } from "$lib/stores";
 
     import type { Trade } from "$lib/structures/trades";
     import { PencilAlt, Trash } from "@steeze-ui/heroicons";
@@ -31,10 +32,14 @@ import { tradesSvc } from "$lib/axios";
 
     async function deleteTrade() {
         try {
-            await tradesSvc.delete("/trades/" + tradeInfo.id);
+            await tradesSvc.delete("/trades/" + tradeInfo.id, {
+                headers: {
+                    "student-id": $studentId,
+                },
+            });
         } catch (e) {
             if (axios.isAxiosError(e)) {
-                setStatus(false, `failed: ${e.response.data["description"]}`);
+                setStatus(false, `${e.response.statusText}: ${e.response.data["message"]}`);
             } else {
                 setStatus(false, `failed: ${e}`);
             }
@@ -120,7 +125,7 @@ import { tradesSvc } from "$lib/axios";
                 </div>
             {/if}
             {#if status.type != null}
-                <div class="text-red-500 flex flex-wrap mb-2 justify-center">
+                <div class="text-red-500 flex flex-wrap px-3 mb-2 justify-center">
                     {status.msg}
                 </div>
             {/if}
