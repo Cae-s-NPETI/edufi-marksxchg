@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export const tradesSvc = axios.create({
-    baseURL: "http://localhost:9165"
+    baseURL: "http://" + process.env.TRADES_HOST
 });
