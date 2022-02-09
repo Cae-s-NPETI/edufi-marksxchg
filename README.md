@@ -1,5 +1,7 @@
 # EduFi - Marks exchange
 
+[![Docker Image CI](https://github.com/Cae-s-NPETI/edufi-marksxchg/actions/workflows/docker-image.yml/badge.svg)](https://github.com/Cae-s-NPETI/edufi-marksxchg/actions/workflows/docker-image.yml)
+
 Backend source code for the EduFi marks exchange package.
 
 ## Disclaimer
