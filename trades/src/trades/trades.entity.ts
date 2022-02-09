@@ -29,6 +29,30 @@ export class Trade extends BaseEntity {
 
     @Column()
     message: string;
+
+    /**
+     * Update both trade quantities due to fufilment
+     */
+    applyFufil(trade: Trade) {
+        let leftoverOffer = 0;
+        let leftoverReturn = 0;
+
+        this.offerTokenQuantity -= trade.returnTokenQuantity;
+        trade.returnTokenQuantity = 0;
+        if (this.offerTokenQuantity < 0) {
+            // refund the difference
+            trade.returnTokenQuantity = -this.offerTokenQuantity;
+            this.offerTokenQuantity = 0;
+        }
+
+        this.returnTokenQuantity -= trade.offerTokenQuantity;
+        trade.offerTokenQuantity = 0;
+        if (this.returnTokenQuantity < 0) {
+            // refund the difference
+            trade.offerTokenQuantity = -this.returnTokenQuantity;
+            this.returnTokenQuantity = 0;
+        }
+    }
 }
 
 @Entity({ name: "trades_ongoing" })

@@ -34,7 +34,7 @@ export class TradesController {
         trade.offerTokenQuantity = body.offerToken.quantity;
         trade.returnTokenType = body.returnToken.tokenType;
         trade.returnTokenQuantity = body.returnToken.quantity;
-        trade.message = body.message;
+        trade.message = body.message ?? "";
 
         let ongoing = OngoingTrade.create();
         ongoing.trade = trade;
@@ -56,8 +56,11 @@ export class TradesController {
         for (let t of allTrades) {
             // TODO: if not same user
             if (trade.offerTokenType == t.returnTokenType
-                && trade.returnTokenType == t.offerTokenType) {
-                let ratio = t.offerTokenQuantity / t.returnTokenQuantity;
+                && trade.returnTokenType == t.offerTokenType
+                // Not itself
+                && trade.id != t.id) {
+                let ratio = t.returnTokenQuantity / t.offerTokenQuantity;
+                console.log("teste", ratio, findRatio, trade.id, t.id);
                 if (ratio == findRatio) {
                     found = t;
                     break;
@@ -69,39 +72,48 @@ export class TradesController {
             return;
         }
 
-        let offerDiff = Math.abs(trade.offerTokenQuantity - found.returnTokenQuantity);
-        let returnDiff = Math.abs(trade.returnTokenQuantity - found.offerTokenQuantity);
 
-        trade.offerTokenQuantity -= offerDiff;
-        trade.returnTokenQuantity -= returnDiff;
 
-        found.offerTokenQuantity -= returnDiff;
-        found.returnTokenQuantity -= offerDiff;
+        console.log("found a same ratios.");
+
+        // Apply the differences
+        trade.applyFufil(found);
 
         if (trade.offerTokenQuantity == 0) {
-            trade.remove();
+            this.serviceDeleteTrade(trade.id);
+        } else {
+            trade.save();
         }
         if (found.offerTokenQuantity == 0) {
-            found.remove();
+            this.serviceDeleteTrade(found.id);
+        } else {
+            found.save();
         }
 
         // save a history record
         let oldTrade = OldTrade.create();
-        oldTrade.tradeAuthorId = trade.authorId;
-        oldTrade.tradeFulfilId = found.authorId;
+        oldTrade.tradeAuthorId = trade.id;
+        oldTrade.tradeFulfilId = found.id;
         oldTrade.save();
     }
 
-    @Delete(":id")
-    async deleteTrade(@Param('id', ParseIntPipe) id: number) {
-        let oTrade = await OngoingTrade.findOne();
+    // I know I should be putting this in a service.
+    async serviceDeleteTrade(id: number) {
+        let oTrade = await OngoingTrade.findOne({
+            where: {
+                tradeId: id
+            }
+        });
         if (!oTrade) {
             throw new NotFoundException('Trade ID not found ' + id);
         }
 
         // rmv
         await oTrade.remove();
+    }
 
-
+    @Delete(":id")
+    async deleteTrade(@Param('id', ParseIntPipe) id: number) {
+        await this.serviceDeleteTrade(id);
     }
 }

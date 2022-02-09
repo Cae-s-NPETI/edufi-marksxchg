@@ -19,9 +19,14 @@
     let trades = [] as Trade[];
 
     const upd = async () => {
-        const resp = await tradesSvc.get("/trades");
-        //console.dir(resp)
-        trades = resp.data as Trade[];
+        try {
+            const resp = await tradesSvc.get("/trades");
+            //console.dir(resp)
+            trades = resp.data as Trade[];
+        } catch (e) {
+            console.error(e);
+        }
+
     };
     onMount(upd);
 
@@ -41,7 +46,9 @@
     </button>
 
     {#if addExpanded}
-        <div class="my-4" transition:slide><OfferInput type="add" /></div>
+        <div class="my-4" transition:slide|local={{ duration: 200 }}>
+            <OfferInput type="add" on:submitted={upd} />
+        </div>
     {/if}
     <TradeCardContainer>
         {#each trades as tradeInfo}

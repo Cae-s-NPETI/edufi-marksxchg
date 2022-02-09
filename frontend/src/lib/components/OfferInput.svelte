@@ -1,6 +1,6 @@
 <script lang="ts">
     import { tradesSvc } from "$lib/axios";
-    import axios,{ AxiosResponse } from "axios";
+    import axios, { AxiosResponse } from "axios";
     import { createEventDispatcher } from "svelte";
     export let type: "add" | "modify";
     export let modifyId = null;
@@ -9,15 +9,13 @@
     interface PartialTradeParam {
         offerToken: PartialTradeToken;
         returnToken: PartialTradeToken;
-        message: string;
+        message?: string;
     }
 
     const dispatch = createEventDispatcher();
 
-    const params = {
-        offerToken: {
-            quantity: 1,
-        },
+    let params = {
+        offerToken: { quantity: 1 },
         returnToken: { quantity: 1 },
     } as PartialTradeParam;
 
@@ -56,16 +54,18 @@
         dispatch("submitted");
         status.type = "success";
         status.msg = "Submitted!";
+
+        params = {
+            offerToken: { quantity: 1, tokenType: "OOAD" },
+            returnToken: { quantity: 1, tokenType: "OOAD" },
+        };
     }
 </script>
 
 <form class="mx-auto w-full max-w-lg">
     <div class="flex flex-wrap -mx-3 mb-6 justify-center">
         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-            <label
-                class="block uppercase tracking-wide text-xs font-bold mb-2"
-                for="grid-state"
-            >
+            <label class="block uppercase tracking-wide text-xs font-bold mb-2" for="grid-state">
                 Type
             </label>
             <div class="relative">
@@ -97,10 +97,7 @@
     </div>
     <div class="flex flex-wrap -mx-3 mb-6 justify-center">
         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-            <label
-                class="block uppercase tracking-wide text-xs font-bold mb-2"
-                for="grid-state"
-            >
+            <label class="block uppercase tracking-wide text-xs font-bold mb-2" for="grid-state">
                 Type
             </label>
             <div class="relative">
@@ -126,7 +123,6 @@
                 class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-last-name"
                 type="number"
-                placeholder="Doe"
                 bind:value={params.returnToken.quantity}
             />
         </div>
@@ -138,7 +134,7 @@
     {/if}
     <div class="flex items-center border-b border-teal-500 py-2 w-2/3 justify-center mx-auto">
         <input
-            class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+            class="appearance-none bg-transparent border-none w-full mr-3 py-1 px-2 leading-tight focus:outline-none"
             type="text"
             placeholder="Your message"
             bind:value={params.message}

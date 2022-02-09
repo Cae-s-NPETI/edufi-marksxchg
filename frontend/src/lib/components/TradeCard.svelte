@@ -1,4 +1,6 @@
 <script lang="ts">
+import { tradesSvc } from "$lib/axios";
+
     import type { Trade } from "$lib/structures/trades";
     import { PencilAlt, Trash } from "@steeze-ui/heroicons";
     import { Icon } from "@steeze-ui/svelte-icon";
@@ -16,8 +18,29 @@
     const props = {};
 
     const dispatch = createEventDispatcher();
-    function deleteTrade(id) {
-        //await axios.delete("/trades/"+id);
+
+    const status = {} as {
+        type?: "success" | "error";
+        msg: string;
+    };
+
+    function setStatus(statusOk: boolean, text: string) {
+        status.type = statusOk ? "success" : "error";
+        status.msg = text;
+    }
+
+    async function deleteTrade() {
+        try {
+            await tradesSvc.delete("/trades/" + tradeInfo.id);
+        } catch (e) {
+            if (axios.isAxiosError(e)) {
+                setStatus(false, `failed: ${e.response.data["description"]}`);
+            } else {
+                setStatus(false, `failed: ${e}`);
+            }
+            return;
+        }
+
         dispatch("delete");
     }
 </script>
@@ -68,7 +91,7 @@
             </div>
             <div class="mt-1 flex items-center text-sm p-4">
                 <div class="flex-1">Modified at</div>
-                <div class="flex px-3 f-semibold">
+                <div class="flex px-3 f-semibold text-right">
                     {new Date(tradeInfo.dateModified)}
                 </div>
             </div>
@@ -92,7 +115,14 @@
                 >
             </div>
             {#if editExpanded}
-                <div class="my-4" transition:slide><OfferInput type="modify" /></div>
+                <div class="my-4" transition:slide|local={{ duration: 200 }}>
+                    <OfferInput type="modify" />
+                </div>
+            {/if}
+            {#if status.type != null}
+                <div class="text-red-500 flex flex-wrap mb-2 justify-center">
+                    {status.msg}
+                </div>
             {/if}
         {/if}
     </div>
