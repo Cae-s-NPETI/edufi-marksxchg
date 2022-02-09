@@ -6,6 +6,10 @@
     export let type: "add" | "modify";
     export let modifyId = null;
 
+    if (type == "modify" && !modifyId) {
+        throw "Need to specify modify id";
+    }
+
     type PartialTradeToken = { tokenType: string; quantity: number };
     interface PartialTradeParam {
         offerToken: PartialTradeToken;
@@ -137,7 +141,7 @@
         </div>
     </div>
     {#if status.type != null}
-        <div class="text-red-500 flex flex-wrap mb-2 justify-center">
+        <div class="text-red-500 flex flex-wrap px-3 mb-2 justify-center">
             {status.msg}
         </div>
     {/if}

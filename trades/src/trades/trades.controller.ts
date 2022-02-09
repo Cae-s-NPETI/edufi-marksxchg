@@ -95,6 +95,7 @@ export class TradesController {
             oldTrade.tradeAuthorId = trade.id;
             oldTrade.tradeFulfilId = found.id;
             oldTrade.authorOfferQuantity = oldTradeOfferQty;
+            oldTrade.fufilOfferQuantity = oldFoundOfferQty;
             oldTrade.save();
         } else {
             trade.save();
@@ -109,6 +110,7 @@ export class TradesController {
             oldTrade.tradeAuthorId = found.id;
             oldTrade.tradeFulfilId = trade.id;
             oldTrade.authorOfferQuantity = oldFoundOfferQty;
+            oldTrade.fufilOfferQuantity = oldTradeOfferQty;
             oldTrade.save();
         } else {
             found.save();

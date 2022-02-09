@@ -121,7 +121,7 @@ import { studentId } from "$lib/stores";
             </div>
             {#if editExpanded}
                 <div class="my-4" transition:slide|local={{ duration: 200 }}>
-                    <OfferInput type="modify" />
+                    <OfferInput on:submitted type="modify" modifyId={tradeInfo.id} />
                 </div>
             {/if}
             {#if status.type != null}
