@@ -15,6 +15,6 @@ ENV NODE_ENV production
 # Copy necessary build ouputs
 COPY --from=builder /usr/app/build-node ./build-node
 
-EXPOSE 9160
+EXPOSE 3000
 
 ENTRYPOINT ["node", "build-node/index.js"]
