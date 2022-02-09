@@ -6,4 +6,7 @@ services:
     build: ./trades
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      args:
+        VITE_TRADES_HOST: localhost:9165

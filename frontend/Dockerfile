@@ -1,3 +1,4 @@
+ARG VITE_TRADES_HOST
 FROM node:16-alpine as builder
 
 RUN npm install -g pnpm
@@ -6,6 +7,9 @@ COPY . ./usr/app
 WORKDIR /usr/app
 
 RUN pnpm install --frozen-lockfile
+
+ENV VITE_TRADES_HOST=${VITE_TRADES_HOST}
+RUN echo aaaaaa ${VITE_TRADES_HOST}
 RUN pnpm run build:dev
 RUN pnpm prune --production
 
@@ -23,4 +27,4 @@ RUN chmod +x ./startup.sh
 
 EXPOSE 3000
 
-ENTRYPOINT ["sh", "./startup.sh"]
+ENTRYPOINT ["sh", "./startup.sh", "${TRADES_HOST}"]

@@ -27,6 +27,8 @@ jobs:
           context: "{{defaultContext}}:frontend"
           push: true
           tags: caengnp/eti2frontend:latest
+          build-args: |
+            VITE_TRADES_HOST=10.31.11.12:9165
 
       - name: Build and push [Trades]
         uses: docker/build-push-action@v2
