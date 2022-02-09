@@ -81,25 +81,40 @@ export class TradesController {
 
         console.log("found a same ratios.");
 
+        let oldTradeOfferQty = trade.offerTokenQuantity;
+        let oldFoundOfferQty = found.offerTokenQuantity;
+
         // Apply the differences
         trade.applyFufil(found);
 
         if (trade.offerTokenQuantity == 0) {
             this.serviceDeleteTrade(trade.id);
+
+            // save a history record
+            let oldTrade = OldTrade.create();
+            oldTrade.tradeAuthorId = trade.id;
+            oldTrade.tradeFulfilId = found.id;
+            oldTrade.authorOfferQuantity = oldTradeOfferQty;
+            oldTrade.save();
         } else {
             trade.save();
         }
+
         if (found.offerTokenQuantity == 0) {
             this.serviceDeleteTrade(found.id);
+
+            // save a history record
+            let oldTrade = OldTrade.create();
+            // Swapped order!
+            oldTrade.tradeAuthorId = found.id;
+            oldTrade.tradeFulfilId = trade.id;
+            oldTrade.authorOfferQuantity = oldFoundOfferQty;
+            oldTrade.save();
         } else {
             found.save();
         }
 
-        // save a history record
-        let oldTrade = OldTrade.create();
-        oldTrade.tradeAuthorId = trade.id;
-        oldTrade.tradeFulfilId = found.id;
-        oldTrade.save();
+
     }
 
     // I know I should be putting this in a service..
