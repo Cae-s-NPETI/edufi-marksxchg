@@ -85,4 +85,10 @@ export class OldTrade extends BaseEntity {
 
     @CreateDateColumn({ type: "timestamp" })
     dateFulfilled: Date;
+
+    @Column()
+    authorOfferQuantity: number;
+
+    @Column()
+    fufilOfferQuantity: number;
 }

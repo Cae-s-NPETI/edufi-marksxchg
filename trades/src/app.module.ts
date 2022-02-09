@@ -7,6 +7,7 @@ import config from './config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { OldTrade, OngoingTrade, Trade } from './trades/trades.entity';
+import { TradeHistoryController } from './trade-history/trade-history.controller';
 
 @Module({
   imports: [
@@ -34,7 +35,7 @@ import { OldTrade, OngoingTrade, Trade } from './trades/trades.entity';
     }),
     TypeOrmModule.forFeature([Trade, OngoingTrade, OldTrade]),
   ],
-  controllers: [AppController, TradesController],
+  controllers: [AppController, TradesController, TradeHistoryController],
   providers: [AppService],
 })
 export class AppModule {}

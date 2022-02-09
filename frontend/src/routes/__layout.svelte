@@ -1,8 +1,9 @@
 <script lang="ts">
     import Alert from "$lib/components/Alert.svelte";
     import Container from "$lib/components/Container.svelte";
+    import LoginPage from "$lib/components/LoginPage.svelte";
     import Navbar from "$lib/components/Navbar.svelte";
-    import { isDarkMode, title } from "$lib/stores";
+    import { isDarkMode, studentId, title } from "$lib/stores";
     import { onMount } from "svelte";
     import "../app.css";
 
@@ -16,8 +17,8 @@
     }
 
     // populated on mount
-    let domActions : {
-        setDarkMode: (set:boolean) => void
+    let domActions: {
+        setDarkMode: (set: boolean) => void;
     } = null;
     onMount(() => {
         domActions = {
@@ -27,8 +28,8 @@
                 } else {
                     document.documentElement.classList.remove("dark");
                 }
-            }
-        }
+            },
+        };
     });
 
     // Listen to dark mode preference
@@ -41,23 +42,24 @@
     </title>
 </svelte:head>
 
-<header>
-    <Navbar />
-</header>
+{#if $studentId != null}
+    <header>
+        <Navbar />
+    </header>
 
-<!-- TODO: rmv -->
-<Container>
-    <Alert>
-        This site uses <a
-            class="link"
-            target="_blank"
-            href="https://svelte.dev">Svelte</a
-        > under the hood to bring you this content seamlessly.
-    </Alert>
-</Container>
+    <!-- TODO: rmv -->
+    <Container>
+        <Alert>
+            This site uses <a class="link" target="_blank" href="https://svelte.dev">Svelte</a> under
+            the hood to bring you this content seamlessly.
+        </Alert>
+    </Container>
 
-<div class="pt-5">
-    <slot />
-</div>
+    <div class="pt-5">
+        <slot />
+    </div>
+{:else}
+    <LoginPage />
+{/if}
 
 <footer />

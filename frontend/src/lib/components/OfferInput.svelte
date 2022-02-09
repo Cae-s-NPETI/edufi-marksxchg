@@ -1,5 +1,6 @@
 <script lang="ts">
     import { tradesSvc } from "$lib/axios";
+    import { studentId } from "$lib/stores";
     import axios, { AxiosResponse } from "axios";
     import { createEventDispatcher } from "svelte";
     export let type: "add" | "modify";
@@ -34,11 +35,19 @@
         try {
             switch (type) {
                 case "add": {
-                    resp = await tradesSvc.post("/trades", params);
+                    resp = await tradesSvc.post("/trades", params, {
+                        headers: {
+                            "student-id": $studentId,
+                        },
+                    });
                     break;
                 }
                 case "modify": {
-                    resp = await tradesSvc.patch("/trades/" + modifyId, params);
+                    resp = await tradesSvc.patch("/trades/" + modifyId, params, {
+                        headers: {
+                            "student-id": $studentId,
+                        },
+                    });
                     break;
                 }
             }

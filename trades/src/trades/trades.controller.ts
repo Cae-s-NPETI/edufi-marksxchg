@@ -117,3 +117,16 @@ export class TradesController {
         await this.serviceDeleteTrade(id);
     }
 }
+
+@Controller('trades')
+export class TradesHistoryController {
+    @Get()
+    async getTrades(
+        @Query("skip") skip,
+        @Query("limit") limit
+    ) {
+        return (await OngoingTrade.find(
+            { relations: ["trade"], order: { trade: "DESC" } }
+        )).map((on) => on.trade);
+    }
+}

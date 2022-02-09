@@ -30,6 +30,9 @@ export class OldTrade {
     tradeFulfil: Trade
 
     dateFulfilled: Date;
+
+    authorOfferQuantity: number;
+    fufilOfferQuantity: number;
 }
 
 type PartialTradeToken = { tokenType: string, quantity: number }

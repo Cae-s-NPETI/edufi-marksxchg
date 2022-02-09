@@ -10,3 +10,8 @@ export const title = writable<string | null>(null);
  * TOOD: let's store this in localStorage.
  */
 export const isDarkMode = writable<boolean>(false);
+
+/**
+ * Student ID.
+ */
+export const studentId = writable<number | null>(null);
