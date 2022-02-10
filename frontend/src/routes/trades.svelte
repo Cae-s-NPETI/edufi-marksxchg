@@ -26,15 +26,16 @@
         } catch (e) {
             console.error(e);
         }
+    };
 
+    onMount(() => {
+        upd();
         const interval = setInterval(upd, 5000);
-        //return () => clearInterval(interval);
         onDestroy(() => {
             clearInterval(interval);
         });
-    };
+    });
 
-    onMount(upd);
 </script>
 
 <Main>

@@ -10,7 +10,6 @@
 
     $title = "Trade History";
 
-
     let tradeHistory = [] as OldTrade[];
 
     const upd = async () => {
@@ -21,13 +20,15 @@
         } catch (e) {
             console.error(e);
         }
+    };
 
+    onMount(() => {
+        upd();
         const interval = setInterval(upd, 5000);
         onDestroy(() => {
             clearInterval(interval);
         });
-    };
-    onMount(upd);
+    });
 
 </script>
 
