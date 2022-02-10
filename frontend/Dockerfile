@@ -1,4 +1,3 @@
-ARG VITE_TRADES_HOST
 FROM node:16-alpine as builder
 
 RUN npm install -g pnpm
@@ -8,8 +7,9 @@ WORKDIR /usr/app
 
 RUN pnpm install --frozen-lockfile
 
+ARG VITE_TRADES_HOST
 ENV VITE_TRADES_HOST=${VITE_TRADES_HOST}
-RUN echo aaaaaa ${VITE_TRADES_HOST}
+
 RUN pnpm run build:dev
 RUN pnpm prune --production
 
