@@ -5,7 +5,7 @@
     import type { OldTrade } from "$lib/structures/trades";
     import { ArrowLeft, SwitchHorizontal, UserCircle } from "@steeze-ui/heroicons";
     import { Icon } from "@steeze-ui/svelte-icon";
-    import { onMount } from "svelte";
+    import { onDestroy, onMount } from "svelte";
     import Time from "svelte-time";
 
     $title = "Trade History";
@@ -22,10 +22,10 @@
             console.error(e);
         }
 
-        // https://kaissaroj.medium.com/sveltejs-components-lifecycle-b01ac0cf6d59
-        // If a function is returned from onMount, it will be called when   the component is unmounted.
         const interval = setInterval(upd, 5000);
-        return () => clearInterval(interval);
+        onDestroy(() => {
+            clearInterval(interval);
+        });
     };
     onMount(upd);
 

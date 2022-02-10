@@ -6,7 +6,7 @@
     import TradeCardContainer from "$lib/components/TradeCardContainer.svelte";
     import { title } from "$lib/stores";
     import type { Trade } from "$lib/structures/trades";
-    import { onMount } from "svelte";
+    import { onDestroy, onMount } from "svelte";
     import { slide } from "svelte/transition";
 
     import { PlusCircle } from "@steeze-ui/heroicons";
@@ -27,14 +27,14 @@
             console.error(e);
         }
 
-        // https://kaissaroj.medium.com/sveltejs-components-lifecycle-b01ac0cf6d59
-        // If a function is returned from onMount, it will be called when   the component is unmounted.
         const interval = setInterval(upd, 5000);
-        return () => clearInterval(interval);
+        //return () => clearInterval(interval);
+        onDestroy(() => {
+            clearInterval(interval);
+        });
     };
+
     onMount(upd);
-
-
 </script>
 
 <Main>
