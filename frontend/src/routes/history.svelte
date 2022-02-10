@@ -42,13 +42,13 @@
                 <div class="py-2 flex flex-row items-center justify-between">
                     <div class="flex flex-row items-center">
                         <Icon src={UserCircle} class="inline h-7 w-7" />
-                        <p class="ml-2 text-base font-medium">Author ID {hInfo.tradeAuthor.id}</p>
+                        <p class="ml-2 text-base font-medium">Author ID {hInfo.tradeAuthor.authorId}</p>
                     </div>
                     <Icon src={ArrowLeft} class="inline h-4 w-4" />
                     <div class="flex flex-row items-center">
                         <Icon src={UserCircle} class="inline h-7 w-7" />
                         <p class="ml-2 text-base font-medium">
-                            Fulfiller ID {hInfo.tradeFulfil.id}
+                            Fulfiller ID {hInfo.tradeFulfil.authorId}
                         </p>
                     </div>
                     <div class="flex flex-row items-center">
