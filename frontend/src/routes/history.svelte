@@ -25,9 +25,9 @@
     onMount(() => {
         upd();
         const interval = setInterval(upd, 5000);
-        onDestroy(() => {
+        return () => {
             clearInterval(interval);
-        });
+        };
     });
 
 </script>
