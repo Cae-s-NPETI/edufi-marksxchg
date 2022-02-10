@@ -1,9 +1,3 @@
-# shamtool.com
-
-**NOTICE: The website is under heavy development. Current deployment may not directly reflect the source code.**
-
-Source code for the website [shamtool.com](https://shamtool.com).
-
 ## Local development server
 
 Once you've created a project and installed dependencies with `pnpm install`, start a development server:

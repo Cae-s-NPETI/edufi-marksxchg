@@ -18,6 +18,7 @@
     }
 
     const dispatch = createEventDispatcher();
+    let _studentId = $studentId;
 
     let params = {
         offerToken: { quantity: 1 },
@@ -41,7 +42,7 @@
                 case "add": {
                     resp = await tradesSvc.post("/trades", params, {
                         headers: {
-                            "student-id": $studentId,
+                            "student-id": _studentId,
                         },
                     });
                     break;
@@ -49,7 +50,7 @@
                 case "modify": {
                     resp = await tradesSvc.put("/trades/" + modifyId, params, {
                         headers: {
-                            "student-id": $studentId,
+                            "student-id": _studentId,
                         },
                     });
                     break;

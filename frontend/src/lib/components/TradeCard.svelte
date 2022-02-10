@@ -1,6 +1,6 @@
 <script lang="ts">
     import { tradesSvc } from "$lib/axios";
-import { studentId } from "$lib/stores";
+    import { studentId } from "$lib/stores";
 
     import type { Trade } from "$lib/structures/trades";
     import { PencilAlt, Trash } from "@steeze-ui/heroicons";
@@ -20,6 +20,8 @@ import { studentId } from "$lib/stores";
 
     const dispatch = createEventDispatcher();
 
+    let _studentId = $studentId;
+
     const status = {} as {
         type?: "success" | "error";
         msg: string;
@@ -34,7 +36,7 @@ import { studentId } from "$lib/stores";
         try {
             await tradesSvc.delete("/trades/" + tradeInfo.id, {
                 headers: {
-                    "student-id": $studentId,
+                    "student-id": _studentId,
                 },
             });
         } catch (e) {
